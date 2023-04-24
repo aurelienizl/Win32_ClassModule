@@ -352,3 +352,4 @@ MigrationBackup/
 WRS/appsettings.Development.json
 WRS/appsettings.json
 
+.dccache
