@@ -353,3 +353,5 @@ WRS/appsettings.Development.json
 WRS/appsettings.json
 
 .dccache
+.vscode/launch.json
+.vscode/tasks.json
