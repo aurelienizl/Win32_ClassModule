@@ -69,9 +69,10 @@ class wrs_products
                 });
             }
         }
-        catch
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query WMI for installed applications.");
+            Console.Error.WriteLine($"Error getting installed applications info: {ex.Message}");
+            wrc_generator.logs!.LogError($"Error getting installed applications info: {ex.Message}");
         }
 
         try
@@ -119,11 +120,12 @@ class wrs_products
             });
         }
 
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query registry for installed applications.");
+            Console.Error.WriteLine($"Error getting installed applications info: {ex.Message}");
+            wrc_generator.logs!.LogError($"Error getting installed applications info: {ex.Message}");
         }
-        return new List<ProductInfo>(products);
+        return products.Distinct(new ProductInfoComparer()).ToList();
     }
 
 }

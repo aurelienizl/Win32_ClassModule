@@ -54,9 +54,10 @@ class wrs_winupdates
                 });
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query WMI for installed security patches.");
+            Console.Error.WriteLine("Failed to query WMI for installed security patches error: {0}", ex.Message);
+            wrc_generator.logs!.LogError($"Failed to query WMI for installed security patches error: {ex.Message}");
         }
 
         return updates;

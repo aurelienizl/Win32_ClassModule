@@ -48,9 +48,10 @@ class wrs_bios
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query BIOS info.");
+            Console.Error.WriteLine($"Error getting BIOS info: {ex.Message}");
+            wrc_generator.logs!.LogError($"Error getting BIOS info: {ex.Message}");
         }
 
         return biosList;

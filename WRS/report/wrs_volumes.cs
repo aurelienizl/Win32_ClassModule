@@ -52,9 +52,10 @@ class wrs_volumes
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query volume info.");
+            Console.Error.WriteLine($"Error getting volume info: {ex.Message}");
+            wrc_generator.logs!.LogError($"Error getting volume info: {ex.Message}");
         }
 
         try
@@ -86,9 +87,10 @@ class wrs_volumes
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query volume encryption info.");
+            Console.Error.WriteLine($"Error getting volume encryption info: {ex.Message}");
+            wrc_generator.logs!.LogError($"Error getting volume encryption info: {ex.Message}");
         }
 
         return volumes;

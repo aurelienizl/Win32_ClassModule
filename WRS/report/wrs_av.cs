@@ -44,9 +44,10 @@ class wrs_av
             }
 
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query antivirus info.");
+            Console.Error.WriteLine($"Error getting antivirus info: {ex.Message}");
+            wrc_generator.logs!.LogError($"Error getting antivirus info: {ex.Message}");
         }
 
         return antivirusInfos;

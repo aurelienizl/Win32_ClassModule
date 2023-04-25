@@ -2,6 +2,7 @@ using System.Text.Json;
 
 class wrc_generator
 {
+    public static WrsLogs? logs;
     struct Report
     {
         public List<wrs_accounts.UserAccount> accounts { get; set; }
@@ -16,34 +17,42 @@ class wrc_generator
 
     public static void GenerateReport()
     {
+        logs = new WrsLogs();
         Report report = new Report();
 
-        Thread accountsThread = new Thread(() => LoadAccountsInfo(ref report));
-        Thread avThread = new Thread(() => LoadAntivirusInfo(ref report));
-        Thread biosThread = new Thread(() => LoadBiosInfo(ref report));
-        Thread tcpConnectionsThread = new Thread(() => LoadTcpConnectionsInfo(ref report));
-        Thread productsThread = new Thread(() => LoadProductsInfo(ref report));
-        Thread sysinfoThread = new Thread(() => LoadSystemInfo(ref report));
-        Thread volumesThread = new Thread(() => LoadVolumesInfo(ref report));
-        Thread winUpdatesThread = new Thread(() => LoadWinUpdatesInfo(ref report));
+        // Log start of report generation
+        logs.LogInfo("Report generation started");
 
-        accountsThread.Start();
-        avThread.Start();
-        biosThread.Start();
-        tcpConnectionsThread.Start();
-        productsThread.Start();
-        sysinfoThread.Start();
-        volumesThread.Start();
-        winUpdatesThread.Start();
+        // Start loading data asynchronously
+        Task[] tasks = new Task[]
+        {
+        Task.Run(() => LoadAccountsInfo(ref report)),
+        Task.Run(() => LoadAntivirusInfo(ref report)),
+        Task.Run(() => LoadBiosInfo(ref report)),
+        Task.Run(() => LoadTcpConnectionsInfo(ref report)),
+        Task.Run(() => LoadProductsInfo(ref report)),
+        Task.Run(() => LoadSystemInfo(ref report)),
+        Task.Run(() => LoadVolumesInfo(ref report)),
+        Task.Run(() => LoadWinUpdatesInfo(ref report)),
+        };
 
-        accountsThread.Join();
-        avThread.Join();
-        biosThread.Join();
-        tcpConnectionsThread.Join();
-        productsThread.Join();
-        sysinfoThread.Join();
-        volumesThread.Join();
-        winUpdatesThread.Join();
+        // Log the start of each task
+        foreach (Task task in tasks)
+        {
+            logs.LogInfo($"Task {task.Id} started");
+        }
+
+        // Wait for all tasks to complete
+        Task.WaitAll(tasks);
+
+        // Log the end of each task
+        foreach (Task task in tasks)
+        {
+            logs.LogInfo($"Task {task.Id} finished");
+        }
+
+        // Log end of report generation
+        logs.LogInfo("Report generation finished");
 
         // Serialize report to JSON
         string json = JsonSerializer.Serialize(report);
@@ -66,17 +75,19 @@ class wrc_generator
                     File.WriteAllText(reportPath, json);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.Error.WriteLine("Failed to generate report: Could not write to file or create directory.");
+                Console.Error.WriteLine($"Failed to generate report: {ex.Message}");
+                logs.LogError($"Failed to generate report: {ex.Message}");
             }
-            System.Console.WriteLine("Report path is: " + reportPath);
+            logs.LogInfo("Report path is: " + reportPath);
         }
         else
         {
             Console.Error.WriteLine("Failed to generate report: Could not get application data folder path.");
+            logs.LogCritical("Failed to generate report: Could not get application data folder path.");
         }
-        Console.WriteLine("Report generated");
+        logs.LogInfo("Report generation finished");
     }
 
     private static void LoadAccountsInfo(ref Report report)
@@ -88,6 +99,7 @@ class wrc_generator
         catch (Exception ex)
         {
             Console.Error.WriteLine($"Error loading accounts info: {ex.Message}");
+            logs!.LogError($"Error loading accounts info: {ex.Message}");
         }
     }
 
@@ -99,7 +111,8 @@ class wrc_generator
         }
         catch (Exception ex)
         {
-           Console.Error.WriteLine($"Error loading antivirus info: {ex.Message}");
+            Console.Error.WriteLine($"Error loading antivirus info: {ex.Message}");
+            logs!.LogError($"Error loading antivirus info: {ex.Message}");
         }
     }
 
@@ -112,6 +125,7 @@ class wrc_generator
         catch (Exception ex)
         {
             Console.Error.WriteLine($"Error loading BIOS info: {ex.Message}");
+            logs!.LogError($"Error loading BIOS info: {ex.Message}");
         }
     }
 
@@ -124,6 +138,7 @@ class wrc_generator
         catch (Exception ex)
         {
             Console.Error.WriteLine($"Error loading TCP connections info: {ex.Message}");
+            logs!.LogError($"Error loading TCP connections info: {ex.Message}");
         }
     }
 
@@ -136,6 +151,7 @@ class wrc_generator
         catch (Exception ex)
         {
             Console.Error.WriteLine($"Error loading products info: {ex.Message}");
+            logs!.LogError($"Error loading products info: {ex.Message}");
         }
     }
 
@@ -148,6 +164,7 @@ class wrc_generator
         catch (Exception ex)
         {
             Console.Error.WriteLine($"Error loading system info: {ex.Message}");
+            logs!.LogError($"Error loading system info: {ex.Message}");
         }
     }
 
@@ -160,6 +177,7 @@ class wrc_generator
         catch (Exception ex)
         {
             Console.Error.WriteLine($"Error loading volumes info: {ex.Message}");
+            logs!.LogError($"Error loading volumes info: {ex.Message}");
         }
     }
 
@@ -172,6 +190,7 @@ class wrc_generator
         catch (Exception ex)
         {
             Console.Error.WriteLine($"Error loading Windows updates info: {ex.Message}");
+            logs!.LogError($"Error loading Windows updates info: {ex.Message}");
         }
     }
 }

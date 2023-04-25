@@ -66,9 +66,10 @@ class wrs_accounts
             }
         }
     }
-    catch (Exception)
+    catch (Exception ex)
     {
-        Console.Error.WriteLine("Failed to get user accounts info.");
+        Console.Error.WriteLine($"Error getting accounts info: {ex.Message}");
+        wrc_generator.logs!.LogError($"Error getting accounts info: {ex.Message}");
     }
 
     return users.ToList();
@@ -91,9 +92,10 @@ class wrs_accounts
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to check if user is administrator.");
+            Console.Error.WriteLine($"Error checking if user is administrator: {ex.Message}");
+            wrc_generator.logs!.LogError($"Error checking if user is administrator: {ex.Message}");
         }
         return false;
     }

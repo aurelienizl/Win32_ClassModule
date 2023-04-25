@@ -50,9 +50,10 @@ class wrs_network
                 list.Add(new TcpConnectionInfo(connection.LocalEndPoint, connection.RemoteEndPoint));
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query network info.");
+            Console.Error.WriteLine($"Error getting TCP connections info: {ex.Message}");
+            wrc_generator.logs!.LogError($"Error getting TCP connections info: {ex.Message}");
         }
 
         return list;

@@ -57,9 +57,10 @@ class wrs_sysinfo
         {
             return Environment.OSVersion.ToString();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query OS version.");
+            Console.Error.WriteLine($"Failed to query OS version: {ex.Message}");
+            wrc_generator.logs!.LogError($"Failed to query OS version: {ex.Message}");
             return "Unknown";
         }
     }
@@ -76,9 +77,10 @@ class wrs_sysinfo
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query BIOS manufacturer.");
+            Console.Error.WriteLine($"Failed to query BIOS manufacturer: {ex.Message}");
+            wrc_generator.logs!.LogError($"Failed to query BIOS manufacturer: {ex.Message}");
         }
         return "Unknown";
     }
@@ -95,9 +97,10 @@ class wrs_sysinfo
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query mainboard name.");
+            Console.Error.WriteLine($"Failed to query mainboard name: {ex.Message}");
+            wrc_generator.logs!.LogError($"Failed to query mainboard name: {ex.Message}");
         }
         return "Unknown";
     }
@@ -114,9 +117,10 @@ class wrs_sysinfo
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query CPU name.");
+            Console.Error.WriteLine($"Failed to query CPU name: {ex.Message}");
+            wrc_generator.logs!.LogError($"Failed to query CPU name: {ex.Message}");
         }
         return "Unknown";
     }
@@ -134,9 +138,10 @@ class wrs_sysinfo
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query total physical memory.");
+            Console.Error.WriteLine($"Failed to query total physical memory: {ex.Message}");
+            wrc_generator.logs!.LogError($"Failed to query total physical memory: {ex.Message}");
         }
         return 0;
     }
@@ -153,9 +158,10 @@ class wrs_sysinfo
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query GPU name.");
+            Console.Error.WriteLine($"Failed to query GPU name: {ex.Message}");
+            wrc_generator.logs!.LogError($"Failed to query GPU name: {ex.Message}");
         }
         return "Unknown";
     }
@@ -173,9 +179,10 @@ class wrs_sysinfo
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query LAN IP address.");
+            Console.Error.WriteLine($"Failed to query LAN IP address: {ex.Message}");
+            wrc_generator.logs!.LogError($"Failed to query LAN IP address: {ex.Message}");
         }
         return "Unknown";
     }
@@ -192,9 +199,10 @@ class wrs_sysinfo
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query MAC address.");
+            Console.Error.WriteLine($"Failed to query MAC address: {ex.Message}");
+            wrc_generator.logs!.LogError($"Failed to query MAC address: {ex.Message}");
         }
         return "Unknown";
     }
@@ -236,9 +244,10 @@ class wrs_sysinfo
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-             Console.Error.WriteLine("Failed to query virtualization status.");
+            Console.Error.WriteLine($"Failed to query virtualization status: {ex.Message}");
+            wrc_generator.logs!.LogError($"Failed to query virtualization status: {ex.Message}");
         }
 
         return false;
@@ -262,9 +271,10 @@ class wrs_sysinfo
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            Console.Error.WriteLine("Failed to query TPM status.");
+            Console.Error.WriteLine($"Failed to query TPM status: {ex.Message}");
+            wrc_generator.logs!.LogError($"Failed to query TPM status: {ex.Message}");
         }
 
         return false;
