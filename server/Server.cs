@@ -49,7 +49,7 @@ public class WrsServer
         }
         catch (OperationCanceledException)
         {
-            // This exception is expected when the cancellationToken is canceled.
+            // Ignore
         }
         finally
         {
@@ -117,6 +117,10 @@ public class WrsServer
     private Aes ConfigureAes(string username, string password, NetworkStream networkStream)
     {
         Aes aes = Aes.Create();
+        aes.KeySize = 256;
+        aes.BlockSize = 128;
+        aes.Mode = CipherMode.CBC;
+
         byte[] iv = new byte[16];
         networkStream.Read(iv, 0, iv.Length);
 

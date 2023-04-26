@@ -1,9 +1,6 @@
-using System;
-using System.IO;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 public class WrsClient
 {
@@ -71,6 +68,11 @@ public class WrsClient
     private Aes CreateAesInstance()
     {
         Aes aes = Aes.Create();
+
+        aes.KeySize = 256;
+        aes.BlockSize = 128;
+        aes.Mode = CipherMode.CBC;
+
         using (Rfc2898DeriveBytes keyDerivation = new Rfc2898DeriveBytes(_username + ":" + _password, Encoding.UTF8.GetBytes("your_salt_here"), 10000, HashAlgorithmName.SHA256))
         {
             aes.Key = keyDerivation.GetBytes(32);
